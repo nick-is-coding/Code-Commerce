@@ -93,6 +93,19 @@ div.FormInput input {
   text-align: left;
 }
 
+/* Error message */
+
+span.ErrorMessageText {
+  font-size: 12px;
+  color: red;
+  display: none;
+  padding: 3px;
+}
+
+input:invalid ~ span {
+  display: block;
+}
+
 div.BottomInfo {
   margin-bottom: 40px;
 }
