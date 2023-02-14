@@ -5,11 +5,17 @@ export default class extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            signIn: true,
         }
     }
 
+
+// handleSubmit = () => {}
+// handleInput = () => {}
+
     render() {
+
+        const signIn = this.state.signIn;
 
         const fields = [
             {label: 'Your Email Address *', name: 'email', required: 'true', typeInput: 'email'},
@@ -20,17 +26,24 @@ export default class extends React.Component {
             {label: 'Postcode', name: 'postalCode', required: 'false', typeInput: 'number'}
         ]
 
+        const signInFields = [
+            {label: 'Email Address *', name: 'email', required: 'true', typeInput: 'email'},
+            {label: 'Password *', name: 'password', required: 'true', typeInput: 'text'},
+        ]
+
         return (
             <div className='LoginForm'>
-                <div className='LoginInfo'>
+            <div className='LoginInfo'>
                 <div className="Toggle">
-                    <input type="radio" id="sign-in" name="toggle" value="sign-in" checked />
-                    <label for="sign-in">SIGN IN</label>
-                    <input type="radio" id="create-account" name="toggle" value="sign-up"/>
-                    <label for="sign-up">CREATE ACCOUNT</label>
-                </div>
+                <input type="radio" id="sign-in" name="toggle" value="sign-in" checked={signIn} onChange={() => this.setState({ signIn: true })} />
+                <label htmlFor="sign-in">SIGN IN</label>
+                <input type="radio" id="create-account" name="toggle" value="sign-up" checked={!signIn} onChange={() => this.setState({ signIn: false })} />
+                <label htmlFor="sign-up">CREATE ACCOUNT</label>
+            </div>
+
                 <form>
-                {fields.map((field, index) => {
+                {!signIn ? (
+                    fields.map((field, index) => {
                         const {label, name, required, typeInput} = field;
                         return (
                             <>
@@ -51,7 +64,28 @@ export default class extends React.Component {
                             )}
                             </>
                         )
-                    })}
+                    })
+                ) : (
+                        signInFields.map((signInFields, index) => {
+                            const {label, name, required, typeInput} = signInFields;
+                            return (
+                                <>
+                                <div className='FormItem'>
+                                    <label> {label} </label>
+                                    <div className='FormInput'>
+                                    <input 
+                                        name={name}
+                                        onChange={this.handleInput}
+                                        autoComplete="off"
+                                        type={typeInput}
+                                        required={required}
+                                    />
+                                    </div>
+                                </div>
+                                </>
+                            )
+                        })
+                    )}
                 </form>
                 <div className='BottomInfo'>
                     <button
