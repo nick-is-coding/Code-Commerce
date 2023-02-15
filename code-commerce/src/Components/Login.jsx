@@ -15,7 +15,7 @@ export default class extends React.Component {
         }
     }
 
-handleSubmit = (event) => {
+    handleSubmit = (event) => {
         event.preventDefault();
         const form = event.target;
         if (form.checkValidity()) {
@@ -23,28 +23,31 @@ handleSubmit = (event) => {
         } else {
           this.setState({ submitted: true });
         }
-};
+    };
       
-handleInput = (event) => {
-    const input = event.target;
-    const isPasswordField = input.name === 'password';
+    handleInput = (event) => {
+        const input = event.target;
+        const isPasswordField = input.name === 'password';
+        const errorMessage = input.validationMessage;
+      
+        this.setState((prevState) => ({
+          [input.name]: input.value,
+          passwordFieldRendered: isPasswordField ? prevState.passwordFieldRendered : true,
+        }), () => {
+          input.setCustomValidity(errorMessage);
+        });
+      };
 
-    this.setState((prevState) => ({
-      [input.name]: input.checkValidity(),
-      passwordFieldRendered: isPasswordField ? prevState.passwordFieldRendered : true,
-    }));
-  }
-
-  handleIconClick = () => {
-    this.setState((prevState) => ({
-        passwordFieldRendered: !prevState.passwordFieldRendered
-    }), () => {
-        const passwordField = document.querySelector('input[name="password"]');
-        if (passwordField) {
-            passwordField.type = this.state.passwordFieldRendered ? 'password' : 'text';
-        }
-    });
-}
+    handleIconClick = () => {
+        this.setState((prevState) => ({
+            passwordFieldRendered: !prevState.passwordFieldRendered
+        }), () => {
+            const passwordField = document.querySelector('input[name="password"]');
+            if (passwordField) {
+                passwordField.type = this.state.passwordFieldRendered ? 'password' : 'text';
+            }
+        });
+    };
 
     render() {
 

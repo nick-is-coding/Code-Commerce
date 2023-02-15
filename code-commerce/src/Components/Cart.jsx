@@ -1,11 +1,12 @@
 import React from 'react';
+import CartItems from './CartItems'
 
 
 class Cart extends React.Component {
 
     render(){
         return(
-            <h1>Hi</h1>
+            <CartItems/>
         )
     }
 }
