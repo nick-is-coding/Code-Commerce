@@ -9,28 +9,42 @@ export default class extends React.Component {
         this.state = {
             signIn: true,
             submitted: false,
+            inputPassword: '',
+            confirmPassword: '',
+            passwordFieldRendered: false,
         }
     }
 
 handleSubmit = (event) => {
-    console.log('pressed');
-    event.preventDefault();
-      
-    const form = event.target;
-    const formElements = form.elements;
-      
-    if (form.checkValidity()) {
-        this.setState({ submitted: true });
-    }
-
-}
+        event.preventDefault();
+        const form = event.target;
+        if (form.checkValidity()) {
+          this.props.onSubmit();
+        } else {
+          this.setState({ submitted: true });
+        }
+};
       
 handleInput = (event) => {
     const input = event.target;
+    const isPasswordField = input.name === 'password';
+
     this.setState((prevState) => ({
       [input.name]: input.checkValidity(),
+      passwordFieldRendered: isPasswordField ? prevState.passwordFieldRendered : true,
     }));
   }
+
+  handleIconClick = () => {
+    this.setState((prevState) => ({
+        passwordFieldRendered: !prevState.passwordFieldRendered
+    }), () => {
+        const passwordField = document.querySelector('input[name="password"]');
+        if (passwordField) {
+            passwordField.type = this.state.passwordFieldRendered ? 'password' : 'text';
+        }
+    });
+}
 
     render() {
 
@@ -51,6 +65,8 @@ handleInput = (event) => {
             {label: 'Password *', name: 'password', required: true, typeInput: 'password', errorMessage: 'Please enter a valid password',pattern:"^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$"}
         ]
 
+        const passwordFieldRendered = this.state.passwordFieldRendered;
+
         return (
             <div className='LoginForm'>
             <div className='LoginInfo'>
@@ -63,6 +79,7 @@ handleInput = (event) => {
             <form onSubmit={this.handleSubmit}>
                 {!signIn ? (fields.map((field, index) => {
                     const {label, name, required, typeInput, errorMessage, pattern} = field;
+                    const isPasswordField = name === 'password';
                     return (
                         <>
                         <div className='FormItem'>
@@ -70,14 +87,18 @@ handleInput = (event) => {
                             <div className='FormInput'>
                             <input 
                                 name={name}
+                                className={name}
                                 onChange={this.handleInput}
                                 autoComplete="off"
                                 type={typeInput}
                                 required={required}
                                 pattern={pattern}
                             />
+                            {isPasswordField && (
+                                <FontAwesomeIcon icon={faEye} onClick={this.handleIconClick} className="EyeIcon"/>
+                            )}
                             {submitted && !this.state[name] && (
-                                <span className='ErrorMessageText'>{errorMessage}</span>
+                                <span id={name} className='ErrorMessageText'>{errorMessage}</span>
                             )}
                             </div>
                         </div>
@@ -88,6 +109,7 @@ handleInput = (event) => {
                     )
                 })) : ( signInFields.map((signInFields, index) => {
                         const {label, name, required, typeInput, errorMessage, pattern} = signInFields;
+                        const isPasswordField = name === 'password';
                         return (
                             <>
                             <div className='FormItem'>
@@ -101,8 +123,11 @@ handleInput = (event) => {
                                     required={required}
                                     pattern={pattern}
                                 />
+                            {isPasswordField && (
+                                <FontAwesomeIcon icon={faEye} onClick={this.handleIconClick} className="EyeIcon"/>
+                            )}
                             {submitted && !this.state[name] && (
-                                <span className='ErrorMessageText'>{errorMessage}</span>
+                                <span id={name} className='ErrorMessageText'>{errorMessage}</span>
                             )}
                                 </div>
                             </div>

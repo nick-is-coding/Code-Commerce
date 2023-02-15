@@ -86,6 +86,22 @@ div.FormInput input {
   border: .5px solid grey;
 }
 
+
+/* Eye Icon */
+.EyeIcon {
+  position: relative;
+  top: -37px;
+  left: 318px;
+  height: 20px;
+  z-index: 100;
+}
+
+div.FormInput:nth-child(2) {
+  height: 44px;
+}
+
+
+
 .PasswordDisclaimer {
   padding-top: .5rem;
   padding-bottom: .75rem;
@@ -95,11 +111,26 @@ div.FormInput input {
 
 /* Error message */
 
+/* span.ErrorMessageText {
+  font-size: 12px;
+  color: red;
+  display: none;
+  padding: 3px;
+} */
+
 span.ErrorMessageText {
   font-size: 12px;
   color: red;
   display: none;
   padding: 3px;
+  position: relative;
+  top: -61px;
+  right: -3px;
+  text-align: right;
+}
+
+span#password.ErrorMessageText {
+  top: -92px;
 }
 
 input:invalid ~ span {
